@@ -47,15 +47,26 @@ def play_blackjack():
 # Функция для запуска симуляции
 def simulate_blackjack(rounds=1000000):
     stats = {"win": 0, "loss": 0, "draw": 0}
+    player_money = 1
+    casino_money = 1
+
     for _ in range(rounds):
         result = play_blackjack()
         stats[result] += 1
 
-    return stats
+        # Обновление денег на основе результата
+        if result == "win":
+            player_money += 1
+            casino_money -= 1
+        elif result == "loss":
+            player_money -= 1
+            casino_money += 1
+
+    return stats, player_money, casino_money
 
 # Запуск симуляции с измерением времени
 start_time = time.time()  # Время начала
-results = simulate_blackjack()
+results, player_money, casino_money = simulate_blackjack()
 end_time = time.time()    # Время окончания
 
 # Подсчет процентов
@@ -64,9 +75,11 @@ win_percentage = (results['win'] / total_games) * 100
 loss_percentage = (results['loss'] / total_games) * 100
 draw_percentage = (results['draw'] / total_games) * 100
 
-# Вывод результатов и времени выполнения
-print(f"Results after 1000 games: {results}")
+# Вывод результатов, процентного соотношения и времени выполнения
+print(f"Results after 1,000,000 games: {results}")
 print(f"Win percentage: {win_percentage:.2f}%")
 print(f"Loss percentage: {loss_percentage:.2f}%")
 print(f"Draw percentage: {draw_percentage:.2f}%")
+print(f"Player money after 1,000,000 games: ${player_money}")
+print(f"Casino money after 1,000,000 games: ${casino_money}")
 print(f"Time taken: {end_time - start_time:.4f} seconds")
