@@ -64,22 +64,46 @@ def simulate_blackjack(rounds=1000000):
 
     return stats, player_money, casino_money
 
-# Запуск симуляции с измерением времени
-start_time = time.time()  # Время начала
-results, player_money, casino_money = simulate_blackjack()
-end_time = time.time()    # Время окончания
+# Запуск симуляции 10 раз с измерением времени
+total_results = {"win": 0, "loss": 0, "draw": 0}
+total_player_money = 0
+total_casino_money = 0
 
-# Подсчет процентов
-total_games = sum(results.values())
-win_percentage = (results['win'] / total_games) * 100
-loss_percentage = (results['loss'] / total_games) * 100
-draw_percentage = (results['draw'] / total_games) * 100
+for i in range(10):
+    start_time = time.time()  # Время начала
+    results, player_money, casino_money = simulate_blackjack()
+    end_time = time.time()    # Время окончания
+    
+    # Подсчет процентов
+    total_games = sum(results.values())
+    win_percentage = (results['win'] / total_games) * 100
+    loss_percentage = (results['loss'] / total_games) * 100
+    draw_percentage = (results['draw'] / total_games) * 100
+    
+    # Вывод результатов для каждого запуска
+    print(f"Results after 1,000,000 games (Run {i + 1}): {results}")
+    print(f"Win percentage: {win_percentage:.2f}%")
+    print(f"Loss percentage: {loss_percentage:.2f}%")
+    print(f"Draw percentage: {draw_percentage:.2f}%")
+    print(f"Player money after 1,000,000 games: ${player_money}")
+    print(f"Casino money after 1,000,000 games: ${casino_money}")
+    print(f"Time taken: {end_time - start_time:.4f} seconds\n")
+    
+    # Суммирование результатов
+    total_results['win'] += results['win']
+    total_results['loss'] += results['loss']
+    total_results['draw'] += results['draw']
+    total_player_money += player_money
+    total_casino_money += casino_money
 
-# Вывод результатов, процентного соотношения и времени выполнения
-print(f"Results after 1,000,000 games: {results}")
-print(f"Win percentage: {win_percentage:.2f}%")
-print(f"Loss percentage: {loss_percentage:.2f}%")
-print(f"Draw percentage: {draw_percentage:.2f}%")
-print(f"Player money after 1,000,000 games: ${player_money}")
-print(f"Casino money after 1,000,000 games: ${casino_money}")
-print(f"Time taken: {end_time - start_time:.4f} seconds")
+# Итоговый вывод средних значений и общего результата
+print("Final summary after 10 runs:")
+average_win_percentage = (total_results['win'] / (10 * 1000000)) * 100
+average_loss_percentage = (total_results['loss'] / (10 * 1000000)) * 100
+average_draw_percentage = (total_results['draw'] / (10 * 1000000)) * 100
+
+print(f"Average win percentage: {average_win_percentage:.2f}%")
+print(f"Average loss percentage: {average_loss_percentage:.2f}%")
+print(f"Average draw percentage: {average_draw_percentage:.2f}%")
+print(f"Total player money after 10 runs: ${total_player_money}")
+print(f"Total casino money after 10 runs: ${total_casino_money}")
